@@ -8,32 +8,6 @@ Checks:
 2. see data in postgre container
 3. hookup to the producer streams with kafka-console-consumer.sh --bootstrap-server broker1:9092 --include "Proj3SockPurchasesTopic|Proj3SockSalesTopic" --from-beginning
 
-TP3-base/
-│
-├── devcontainer
-│   ├── docker-compose-cluster.yml
-│   ├── docker-compose-standalone.yml
-│   └── Dockerfile
-│
-├── config/
-│   ├── delete_connectors.sh
-│   ├── get_connectors.sh
-│   ├── post_connectors.sh
-│   ├── sink.json
-│   └── source.json
-│
-├── lib/
-│   ├── (several required .jar libraries)
-│
-├── sql/
-│   └── create_tables.sql
-│
-├── target/
-│
-├── commands.sh
-│
-└── pom.xml
-
 
 NEW
 
