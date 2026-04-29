@@ -1,0 +1,3 @@
+Professor recomends running in docker.
+Look through the links in the PDF and learn about the whole broker-consumer-producer environment.
+Go here to have an UI (use the terminals to get used to them and then go to the ui): https://github.com/provectus/kafka-ui
