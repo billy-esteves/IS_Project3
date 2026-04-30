@@ -8,6 +8,18 @@ Checks:
 2. see data in postgre container
 3. hookup to the producer streams with kafka-console-consumer.sh --bootstrap-server broker1:9092 --include "Proj3SockPurchasesTopic|Proj3SockSalesTopic" --from-beginning
 
+How to run the project:
+1 - in TP3-base/ - mvn clean package
+2 - docker-compose-cluster.yml - Compose up
+3 - Run each producer:
+    - mvn exec:java -Dexec.mainClass="producers.SalesProducer"
+    - mvn exec:java -Dexec.mainClass="producers.PurchaseProducer"
+
+4 - Open each broker in terminal to see the incoming messages:
+    - devcontainer-broker1-1evcontainer-broker1-1
+    - devcontainer-broker1-1evcontainer-broker2-1
+    - devcontainer-broker1-1evcontainer-broker3-1
+
 
 NEW
 

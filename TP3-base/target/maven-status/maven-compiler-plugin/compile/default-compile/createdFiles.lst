@@ -1,0 +1,7 @@
+models/Purchase.class
+models/CountryStats.class
+models/Sale.class
+producers/PurchaseProducer.class
+models/AggregateStats.class
+models/ItemStats.class
+producers/SalesProducer.class

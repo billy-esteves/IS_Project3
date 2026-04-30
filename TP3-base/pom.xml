@@ -34,13 +34,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>[INFO] Building jar: /home/billy/Masters_Repository/MEI/Programas/1º ano/2º semestre/IS/IS_Project3/TP3-base/target/project3-0.0.1-SNAPSHOT.jar
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  41.889 s
-[INFO] Finished at: 2026-04-29T17:29:40+01:00
-[INFO] ------------------------------------------------------------------------
+			<artifactId>slf4j-simple</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>

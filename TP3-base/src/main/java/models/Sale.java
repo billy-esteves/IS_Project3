@@ -1,3 +1,5 @@
+package models;
+
 /**
  * Represents a sales event in the system.
  *

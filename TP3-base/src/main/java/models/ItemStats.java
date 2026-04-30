@@ -1,3 +1,5 @@
+package models;
+
 /**
  * Represents an aggregated statistical result computed by Kafka Streams.
  *

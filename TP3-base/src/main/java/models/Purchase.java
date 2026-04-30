@@ -1,3 +1,5 @@
+package models;
+
 /**
  * Represents a purchase event made by the system (e.g., supplier stock acquisition).
  *
