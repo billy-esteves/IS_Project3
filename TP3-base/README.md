@@ -20,6 +20,16 @@ How to run the project:
     - devcontainer-broker1-1evcontainer-broker2-1
     - devcontainer-broker1-1evcontainer-broker3-1
 
+(ChatGPT list of steps):
+1 - Run maven
+mvn clean package
+
+2 - Start infrastructure (Docker)
+cd devcontainer
+docker compose -f docker-compose-cluster.yml up -d
+
+3 - Run from project root (in another terminal)
+mvn exec:java -Dexec.mainClass="streams.AnalyticsTopology"
 
 NEW
 
