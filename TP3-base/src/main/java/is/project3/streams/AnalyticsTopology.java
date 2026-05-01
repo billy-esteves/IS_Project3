@@ -1,14 +1,15 @@
 package is.project3.streams;
 
-
+import org.apache.kafka.streams.kstream.Produced;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import is.project3.config.KafkaConfig;
-import is.project3.util.TopicNames;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
+
+import is.project3.config.KafkaConfig;
+import is.project3.util.TopicNames;
 
 import java.time.Duration;
 
@@ -37,7 +38,7 @@ public class AnalyticsTopology {
 
         revenuePerItem.toStream()
                 .mapValues(v -> json("revenue", v))
-                .to("revenue-per-item");
+                .to("revenue-per-item", Produced.with(Serdes.String(), Serdes.String()));
 
         // EXPENSES PER ITEM
         KTable<String, Double> expensePerItem =
@@ -52,7 +53,7 @@ public class AnalyticsTopology {
 
         expensePerItem.toStream()
                 .mapValues(v -> json("expense", v))
-                .to("Proj3TotalExpensesOutputStreamsTopic");
+                .to("Proj3TotalExpensesOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
 
         // PROFIT PER ITEM (JOIN)
         // profit = revenue - expense
@@ -64,7 +65,7 @@ public class AnalyticsTopology {
 
         profitPerItem.toStream()
                 .mapValues(v -> json("profit", v))
-                .to("Proj3TotalProfitOutputStreamsTopic");
+                .to("Proj3TotalProfitOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
 
         // TOTALS (ALL ITEMS COMBINED)
         KTable<String, Double> totalRevenue =
@@ -84,15 +85,15 @@ public class AnalyticsTopology {
 
         totalRevenue.toStream()
                 .mapValues(v -> json("totalRevenue", v))
-                .to("total-revenue");
+                .to("total-revenue", Produced.with(Serdes.String(), Serdes.String()));
 
         totalExpenses.toStream()
                 .mapValues(v -> json("totalExpenses", v))
-                .to("Proj3TotalExpensesOutputStreamsTopic");
+                .to("Proj3TotalExpensesOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
 
         totalProfit.toStream()
                 .mapValues(v -> json("totalProfit", v))
-                .to("Proj3TotalProfitOutputStreamsTopic");
+                .to("Proj3TotalProfitOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
 
         // WINDOWED REVENUE (1 HOUR)
         revenuePerItem
@@ -102,7 +103,13 @@ public class AnalyticsTopology {
                 .reduce(Double::sum)
                 .toStream()
                 .mapValues(v -> json("windowedRevenue", v))
-                .to("Proj3TotalRevenueWindowedOutputStreamsTopic");
+                .to(
+                        "Proj3TotalRevenueWindowedOutputStreamsTopic",
+                        Produced.with(
+                        WindowedSerdes.timeWindowedSerdeFrom(String.class),
+                        Serdes.String()
+                        )
+                );
 
         // HIGHEST PROFIT ITEM
         profitPerItem
@@ -111,7 +118,7 @@ public class AnalyticsTopology {
                 .reduce((a, b) -> a > b ? a : b)
                 .toStream()
                 .mapValues(v -> json("highestProfit", v))
-                .to("Proj3HighestProfitOutputStreamsTopic");
+                .to("Proj3HighestProfitOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
 
         return builder.build();
     }

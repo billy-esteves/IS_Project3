@@ -1,11 +1,12 @@
 package is.project3.streams;
 
-
 import com.google.gson.Gson;
-import is.project3.models.AggregateStats;
-import is.project3.models.ItemStats;
+import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
+
+import is.project3.models.AggregateStats;
+import is.project3.models.ItemStats;
 
 public class AggregateStatsProcessor {
 
@@ -17,49 +18,80 @@ public class AggregateStatsProcessor {
         KStream<String, String> expenseStream = builder.stream("expenses-per-item");
         KStream<String, String> profitStream = builder.stream("profit-per-item");
 
+        // -------------------------
         // TOTAL REVENUE
-        revenueStream
-                .mapValues((ValueMapper<String, ItemStats>) v -> gson.fromJson(v, ItemStats.class))
-                .groupBy((k, v) -> "total")
-                .aggregate(
-                        AggregateStats::new,
-                        (key, value, agg) -> {
-                            agg.setTotalRevenue(agg.getTotalRevenue() + value.getValue());
-                            return agg;
-                        }
-                )
+        // -------------------------
+        KTable<String, AggregateStats> revenueAgg =
+                revenueStream
+                        .mapValues((ValueMapper<String, ItemStats>) v ->
+                                gson.fromJson(v, ItemStats.class)
+                        )
+                        .groupBy(
+                                (key, value) -> "total",
+                                Grouped.with(Serdes.String(), Serdes.serdeFrom(
+                                        (topic, data) -> gson.toJson(data).getBytes(),
+                                        (topic, bytes) -> gson.fromJson(new String(bytes), ItemStats.class)
+                                ))
+                        )
+                        .aggregate(
+                                AggregateStats::new,
+                                (key, value, agg) -> {
+                                    agg.setTotalRevenue(agg.getTotalRevenue() + value.getValue());
+                                    return agg;
+                                }
+                        );
+
+        revenueAgg
                 .toStream()
-                .mapValues((ValueMapper<AggregateStats, String>) gson::toJson)
+                .mapValues(v -> gson.toJson(v))
                 .to("total-revenue");
 
+        // -------------------------
         // TOTAL EXPENSES
-        expenseStream
-                .mapValues((ValueMapper<String, ItemStats>) v -> gson.fromJson(v, ItemStats.class))
-                .groupBy((k, v) -> "total")
-                .aggregate(
-                        AggregateStats::new,
-                        (key, value, agg) -> {
-                            agg.setTotalExpenses(agg.getTotalExpenses() + value.getValue());
-                            return agg;
-                        }
-                )
+        // -------------------------
+        KTable<String, AggregateStats> expenseAgg =
+                expenseStream
+                        .mapValues((ValueMapper<String, ItemStats>) v ->
+                                gson.fromJson(v, ItemStats.class)
+                        )
+                        .groupBy(
+                                (key, value) -> "total"
+                        )
+                        .aggregate(
+                                AggregateStats::new,
+                                (key, value, agg) -> {
+                                    agg.setTotalExpenses(agg.getTotalExpenses() + value.getValue());
+                                    return agg;
+                                }
+                        );
+
+        expenseAgg
                 .toStream()
-                .mapValues((ValueMapper<AggregateStats, String>) gson::toJson)
+                .mapValues(v -> gson.toJson(v))
                 .to("total-expenses");
 
+        // -------------------------
         // TOTAL PROFIT
-        profitStream
-                .mapValues((ValueMapper<String, ItemStats>) v -> gson.fromJson(v, ItemStats.class))
-                .groupBy((k, v) -> "total")
-                .aggregate(
-                        AggregateStats::new,
-                        (key, value, agg) -> {
-                            agg.setTotalProfit(agg.getTotalProfit() + value.getValue());
-                            return agg;
-                        }
-                )
+        // -------------------------
+        KTable<String, AggregateStats> profitAgg =
+                profitStream
+                        .mapValues((ValueMapper<String, ItemStats>) v ->
+                                gson.fromJson(v, ItemStats.class)
+                        )
+                        .groupBy(
+                                (key, value) -> "total"
+                        )
+                        .aggregate(
+                                AggregateStats::new,
+                                (key, value, agg) -> {
+                                    agg.setTotalProfit(agg.getTotalProfit() + value.getValue());
+                                    return agg;
+                                }
+                        );
+
+        profitAgg
                 .toStream()
-                .mapValues((ValueMapper<AggregateStats, String>) gson::toJson)
+                .mapValues(v -> gson.toJson(v))
                 .to("total-profit");
     }
 }

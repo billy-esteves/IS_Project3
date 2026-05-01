@@ -1,38 +1,25 @@
-1. Run post_connectors.sh (in config folder context)
-2. Run producers (*Producer.java)
-3. Run Proje3Streams.java
-
-
-Checks:
-1. check with kafka-topics.sh --bootstrap-server broker1:9092 --list
-2. see data in postgre container
-3. hookup to the producer streams with kafka-console-consumer.sh --bootstrap-server broker1:9092 --include "Proj3SockPurchasesTopic|Proj3SockSalesTopic" --from-beginning
-
 How to run the project:
-1 - in TP3-base/ - mvn clean package
-2 - docker-compose-cluster.yml - Compose up
-3 - Run each producer:
-    - mvn exec:java -Dexec.mainClass="producers.SalesProducer"
-    - mvn exec:java -Dexec.mainClass="producers.PurchaseProducer"
 
-4 - Open each broker in terminal to see the incoming messages:
-    - devcontainer-broker1-1evcontainer-broker1-1
-    - devcontainer-broker1-1evcontainer-broker2-1
-    - devcontainer-broker1-1evcontainer-broker3-1
-
-(ChatGPT list of steps):
 1 - Run maven
 mvn clean package
 
 2 - Start infrastructure (Docker)
-cd devcontainer
+cd .devcontainer
 docker compose -f docker-compose-cluster.yml up -d
 
+check if brokers are running:
+docker ps
+
+you should see, among other results:
+609adb7c1749   confluentinc/cp-kafka:7.5.1       "/etc/confluent/dock…"   28 hours ago   Up 9 seconds                      9092/tcp, 0.0.0.0:29094->29094/tcp, [::]:29094->29094/tcp                       devcontainer-broker3-1
+7eb91f94d455   confluentinc/cp-kafka:7.5.1       "/etc/confluent/dock…"   28 hours ago   Up 9 seconds                      9092/tcp, 0.0.0.0:29093->29093/tcp, [::]:29093->29093/tcp                       devcontainer-broker2-1
+f85506569599   confluentinc/cp-kafka:7.5.1       "/etc/confluent/dock…"   28 hours ago   Up 9 seconds                      9092/tcp, 0.0.0.0:29092->29092/tcp, [::]:29092->29092/tcp                       devcontainer-broker1-1
+
 3 - Run from project root (in another terminal)
-mvn exec:java -Dexec.mainClass="streams.AnalyticsTopology"
+cd TP3-base
+mvn exec:java -Dexec.mainClass="Main"
 
-NEW
-
+Project topology:
 TP3-project3/
 │
 ├── devcontainer/

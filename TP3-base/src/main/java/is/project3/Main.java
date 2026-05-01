@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("🚀 Starting Project 3 System...");
+        System.out.println("Starting System...");
 
         // 1. START KAFKA STREAMS
         startStreams();
