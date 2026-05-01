@@ -17,7 +17,7 @@ public class WindowedStatsProcessor {
                 builder.stream("revenue-per-item");
 
         revenueStream
-                .mapValues(v -> gson.fromJson(v, ItemStats.class))
+                .mapValues((ValueMapper<String, ItemStats>) v -> gson.fromJson(v, ItemStats.class))
                 .groupByKey()
                 .windowedBy(TimeWindows.of(Duration.ofHours(1)))
                 .aggregate(
@@ -25,7 +25,7 @@ public class WindowedStatsProcessor {
                         (key, value, agg) -> agg + value.getValue()
                 )
                 .toStream()
-                .mapValues(gson::toJson)
+                .mapValues((ValueMapper<Object, String>) gson::toJson)
                 .to("windowed-revenue");
     }
 }

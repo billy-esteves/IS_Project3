@@ -17,11 +17,11 @@ public class ExpenseProcessor {
 
         KTable<String, ItemStats> expenseTable =
                 purchaseStream
-                        .mapValues(value -> gson.fromJson(value, Purchase.class))
+                        .mapValues((String value) -> gson.fromJson(value, Purchase.class))
 
                         .selectKey((key, purchase) -> purchase.getItem())
 
-                        .mapValues(purchase ->
+                        .mapValues((Purchase purchase) ->
                                 new ItemStats(
                                         purchase.getItem(),
                                         purchase.getPrice() * purchase.getUnits()
@@ -38,7 +38,7 @@ public class ExpenseProcessor {
 
         expenseTable
                 .toStream()
-                .mapValues(gson::toJson)
+                .mapValues((ItemStats v) -> gson.toJson(v))
                 .to("expenses-per-item");
     }
 }

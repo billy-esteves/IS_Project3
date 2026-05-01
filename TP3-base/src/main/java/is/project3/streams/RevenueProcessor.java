@@ -17,13 +17,13 @@ public class RevenueProcessor {
 
         KTable<String, ItemStats> revenueTable =
                 salesStream
-                        .mapValues(value -> gson.fromJson(value, Sale.class))
+                        .mapValues((String value) -> gson.fromJson(value, Sale.class))
 
-                        // key = item
+                        // key = item   
                         .selectKey((key, sale) -> sale.getItem())
 
                         // convert to ItemStats
-                        .mapValues(sale -> new ItemStats(
+                        .mapValues((Sale sale) -> new ItemStats(
                                                 sale.getItem(),
                                                 sale.getPrice() * sale.getUnits()
                                             )
@@ -38,7 +38,7 @@ public class RevenueProcessor {
 
         revenueTable
                 .toStream()
-                .mapValues(gson::toJson)
+                .mapValues((ItemStats v) -> gson.toJson(v))
                 .to("revenue-per-item");
     }
 }

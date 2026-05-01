@@ -16,13 +16,13 @@ public class RankingProcessor {
                 builder.stream("profit-per-item");
 
         profitStream
-                .mapValues(v -> gson.fromJson(v, ItemStats.class))
+                .mapValues((ValueMapper<String, ItemStats>) v -> gson.fromJson(v, ItemStats.class))
                 .groupBy((key, value) -> "max")
                 .reduce((v1, v2) ->
                         v1.getValue() > v2.getValue() ? v1 : v2
                 )
                 .toStream()
-                .mapValues(gson::toJson)
+                .mapValues((ValueMapper<ItemStats, String>) gson::toJson)
                 .to("highest-profit");
     }
 }

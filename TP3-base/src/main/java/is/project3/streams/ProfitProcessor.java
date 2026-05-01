@@ -35,7 +35,7 @@ public class ProfitProcessor {
 
         profitTable
                 .toStream()
-                .mapValues(gson::toJson)
+                .mapValues((ItemStats v) -> gson.toJson(v))
                 .to("profit-per-item");
     }
 }

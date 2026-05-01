@@ -19,7 +19,7 @@ public class AggregateStatsProcessor {
 
         // TOTAL REVENUE
         revenueStream
-                .mapValues(v -> gson.fromJson(v, ItemStats.class))
+                .mapValues((ValueMapper<String, ItemStats>) v -> gson.fromJson(v, ItemStats.class))
                 .groupBy((k, v) -> "total")
                 .aggregate(
                         AggregateStats::new,
@@ -29,12 +29,12 @@ public class AggregateStatsProcessor {
                         }
                 )
                 .toStream()
-                .mapValues(gson::toJson)
+                .mapValues((ValueMapper<AggregateStats, String>) gson::toJson)
                 .to("total-revenue");
 
         // TOTAL EXPENSES
         expenseStream
-                .mapValues(v -> gson.fromJson(v, ItemStats.class))
+                .mapValues((ValueMapper<String, ItemStats>) v -> gson.fromJson(v, ItemStats.class))
                 .groupBy((k, v) -> "total")
                 .aggregate(
                         AggregateStats::new,
@@ -44,12 +44,12 @@ public class AggregateStatsProcessor {
                         }
                 )
                 .toStream()
-                .mapValues(gson::toJson)
+                .mapValues((ValueMapper<AggregateStats, String>) gson::toJson)
                 .to("total-expenses");
 
         // TOTAL PROFIT
         profitStream
-                .mapValues(v -> gson.fromJson(v, ItemStats.class))
+                .mapValues((ValueMapper<String, ItemStats>) v -> gson.fromJson(v, ItemStats.class))
                 .groupBy((k, v) -> "total")
                 .aggregate(
                         AggregateStats::new,
@@ -59,7 +59,7 @@ public class AggregateStatsProcessor {
                         }
                 )
                 .toStream()
-                .mapValues(gson::toJson)
+                .mapValues((ValueMapper<AggregateStats, String>) gson::toJson)
                 .to("total-profit");
     }
 }

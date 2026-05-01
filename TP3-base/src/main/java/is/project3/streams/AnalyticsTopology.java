@@ -37,7 +37,7 @@ public class AnalyticsTopology {
 
         revenuePerItem.toStream()
                 .mapValues(v -> json("revenue", v))
-                .to("Proj3TotalRevenueOutputStreamsTopic");
+                .to("revenue-per-item");
 
         // EXPENSES PER ITEM
         KTable<String, Double> expensePerItem =
@@ -68,17 +68,23 @@ public class AnalyticsTopology {
 
         // TOTALS (ALL ITEMS COMBINED)
         KTable<String, Double> totalRevenue =
-                revenuePerItem.reduce(Double::sum);
+        revenuePerItem
+                .toStream()
+                .groupBy((k, v) -> "total", Grouped.with(Serdes.String(), Serdes.Double()))
+                .reduce(Double::sum);
 
         KTable<String, Double> totalExpenses =
-                expensePerItem.reduce(Double::sum);
+        expensePerItem
+                .toStream()
+                .groupBy((k, v) -> "total", Grouped.with(Serdes.String(), Serdes.Double()))
+                .reduce(Double::sum);
 
         KTable<String, Double> totalProfit =
                 totalRevenue.join(totalExpenses, (r, e) -> r - e);
 
         totalRevenue.toStream()
                 .mapValues(v -> json("totalRevenue", v))
-                .to("Proj3TotalRevenueOutputStreamsTopic");
+                .to("total-revenue");
 
         totalExpenses.toStream()
                 .mapValues(v -> json("totalExpenses", v))
@@ -92,7 +98,7 @@ public class AnalyticsTopology {
         revenuePerItem
                 .toStream()
                 .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
-                .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofHours(1), Duration.ofMinutes(0)))
+                .windowedBy(TimeWindows.of(Duration.ofHours(1)))
                 .reduce(Double::sum)
                 .toStream()
                 .mapValues(v -> json("windowedRevenue", v))
@@ -101,7 +107,7 @@ public class AnalyticsTopology {
         // HIGHEST PROFIT ITEM
         profitPerItem
                 .toStream()
-                .groupByKey()
+                .groupBy((k, v) -> "global")
                 .reduce((a, b) -> a > b ? a : b)
                 .toStream()
                 .mapValues(v -> json("highestProfit", v))
