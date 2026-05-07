@@ -14,6 +14,8 @@ import org.apache.kafka.common.serialization.Deserializer;
 import java.time.Duration;
  
 public class AnalyticsTopology {
+
+    private static final boolean debug = true; // Set to true to enable debug logs
  
     private static final Gson gson = new Gson();
  
@@ -25,8 +27,8 @@ public class AnalyticsTopology {
         KStream<String, String> purchases = builder.stream("purchases-topic", Consumed.with(Serdes.String(), Serdes.String()));
  
         // ============= REVENUE PER ITEM =============
-        KTable<String, Double> revenuePerItem = sales
-                .mapValues(value -> {
+        KTable<String, Double> revenuePerItem = 
+                sales.mapValues(value -> {
                     JsonObject json = gson.fromJson(value, JsonObject.class);
                     return json.get("price").getAsDouble() * json.get("units").getAsInt();
                 })
@@ -34,9 +36,13 @@ public class AnalyticsTopology {
                 .reduce(
                         Double::sum,
                         Materialized.as("revenue-per-item-store")
-                                .withKeySerde(Serdes.String())
-                                .withValueSerde(Serdes.Double())
                 );
+
+        if (debug) {
+            System.out.println("Debug: revenuePerItem KTable created");
+            System.out.println("Debug: revenuePerItem KTable content:");
+            revenuePerItem.toStream().foreach((key, value) -> System.out.println("Item: " + key + ", Revenue: " + value));
+        }
  
         revenuePerItem.toStream()
                 .mapValues(v -> toJson("revenuePerItem", v))
@@ -52,9 +58,13 @@ public class AnalyticsTopology {
                 .reduce(
                         Double::sum,
                         Materialized.as("expenses-per-item-store")
-                                .withKeySerde(Serdes.String())
-                                .withValueSerde(Serdes.Double())
                 );
+
+        if (debug) {
+            System.out.println("Debug: expensesPerItem KTable created");
+            System.out.println("Debug: expensesPerItem KTable content:");
+            expensesPerItem.toStream().foreach((key, value) -> System.out.println("Item: " + key + ", Expenses: " + value));
+        }
  
         expensesPerItem.toStream()
                 .mapValues(v -> toJson("expensesPerItem", v))
@@ -65,7 +75,7 @@ public class AnalyticsTopology {
                 expensesPerItem,
                 (revenue, expense) -> revenue - expense
         );
- 
+
         profitPerItem.toStream()
                 .mapValues(v -> toJson("profitPerItem", v))
                 .to("output-profit-per-item", Produced.with(Serdes.String(), Serdes.String()));
@@ -77,14 +87,19 @@ public class AnalyticsTopology {
                 .reduce(
                         Double::sum,
                         Materialized.as("total-revenue-store")
-                                .withKeySerde(Serdes.String())
-                                .withValueSerde(Serdes.Double())
+
                 );
- 
+
+        if (debug) {
+            System.out.println("Debug: totalRevenue KTable created");
+            System.out.println("Debug: totalRevenue KTable content:");
+            totalRevenue.toStream().foreach((key, value) -> System.out.println("Key: " + key + ", Total Revenue: " + value));
+        }
+
         totalRevenue.toStream()
                 .mapValues(v -> toJson("totalRevenue", v))
                 .to("output-total-revenue", Produced.with(Serdes.String(), Serdes.String()));
- 
+    /**
         // ============= AVERAGE AMOUNT SPENT PER PURCHASE =============
         KTable<String, double[]> purchaseAverages = purchases
                 .mapValues(value -> {
@@ -163,10 +178,11 @@ public class AnalyticsTopology {
         highestSalesCountry.toStream()
                 .mapValues(cs -> toJson("topCountry", cs.country + " (" + String.format("%.2f", cs.sales) + ")"))
                 .to("output-highest-sales-country", Produced.with(Serdes.String(), Serdes.String()));
- 
+        **/
         return builder.build();
+     
     }
- 
+
     // ============= Helper Classes =============
     static class ItemProfit {
         public String item;

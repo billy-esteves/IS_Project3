@@ -19,7 +19,7 @@ public class Main {
         System.out.println("Starting System...");
 
         // 1. START KAFKA STREAMS
-        //startStreams();
+        startStreams();
 
         // 2. START PRODUCERS
         startProducers();
@@ -37,6 +37,24 @@ public class Main {
             System.out.println("Shutting down...");
             if (streams != null) streams.close();
         }));
+    }
+
+    private static void startProducers() {
+
+        System.out.println("Starting Producers...");
+
+        Thread salesThread = new Thread(() -> {
+            SalesProducer.main(null);
+        });
+
+        Thread purchaseThread = new Thread(() -> {
+            PurchaseProducer.main(null);
+        });
+
+        salesThread.start();
+        purchaseThread.start();
+
+        System.out.println("Producers started.");
     }
 
     private static void startStreams() {
@@ -59,23 +77,7 @@ public class Main {
         System.out.println("Kafka Streams started.");
     }
 
-    private static void startProducers() {
-
-        System.out.println("Starting Producers...");
-
-        Thread salesThread = new Thread(() -> {
-            SalesProducer.main(null);
-        });
-
-        Thread purchaseThread = new Thread(() -> {
-            PurchaseProducer.main(null);
-        });
-
-        salesThread.start();
-        purchaseThread.start();
-
-        System.out.println("Producers started.");
-    }
+    
     
     // TODO: implement
     /*
