@@ -1,133 +1,259 @@
 package is.project3.streams;
-
-import org.apache.kafka.streams.kstream.Produced;
+ 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.serialization.Serde;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
-
-import is.project3.config.KafkaConfig;
-import is.project3.util.TopicNames;
-
+import org.apache.kafka.common.serialization.Serializer;
+import org.apache.kafka.common.serialization.Deserializer;
+ 
 import java.time.Duration;
-
+ 
 public class AnalyticsTopology {
-
+ 
     private static final Gson gson = new Gson();
-
+ 
     public static Topology build() {
-
         StreamsBuilder builder = new StreamsBuilder();
-
+ 
         // INPUT STREAMS
-        KStream<String, String> sales = builder.stream("sales-topic");
-        KStream<String, String> purchases = builder.stream("purchases-topic");
-
-        // REVENUE PER ITEM
-        KTable<String, Double> revenuePerItem =
-                sales
-                        .mapValues(value -> {
-                            JsonObject json = gson.fromJson(value, JsonObject.class);
-                            return json.get("price").getAsDouble()
-                                    * json.get("units").getAsInt();
-                        })
-                        .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
-                        .reduce(Double::sum);
-
-        revenuePerItem.toStream()
-                .mapValues(v -> json("revenue", v))
-                .to("revenue-per-item", Produced.with(Serdes.String(), Serdes.String()));
-
-        // EXPENSES PER ITEM
-        KTable<String, Double> expensePerItem =
-                purchases
-                        .mapValues(value -> {
-                            JsonObject json = gson.fromJson(value, JsonObject.class);
-                            return json.get("price").getAsDouble()
-                                    * json.get("units").getAsInt();
-                        })
-                        .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
-                        .reduce(Double::sum);
-
-        expensePerItem.toStream()
-                .mapValues(v -> json("expense", v))
-                .to("Proj3TotalExpensesOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
-
-        // PROFIT PER ITEM (JOIN)
-        // profit = revenue - expense
-        KTable<String, Double> profitPerItem =
-                revenuePerItem.join(
-                        expensePerItem,
-                        (rev, exp) -> rev - exp
+        KStream<String, String> sales = builder.stream("sales-topic", Consumed.with(Serdes.String(), Serdes.String()));
+        KStream<String, String> purchases = builder.stream("purchases-topic", Consumed.with(Serdes.String(), Serdes.String()));
+ 
+        // ============= REVENUE PER ITEM =============
+        KTable<String, Double> revenuePerItem = sales
+                .mapValues(value -> {
+                    JsonObject json = gson.fromJson(value, JsonObject.class);
+                    return json.get("price").getAsDouble() * json.get("units").getAsInt();
+                })
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
+                .reduce(
+                        Double::sum,
+                        Materialized.as("revenue-per-item-store")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.Double())
                 );
-
+ 
+        revenuePerItem.toStream()
+                .mapValues(v -> toJson("revenuePerItem", v))
+                .to("output-revenue-per-item", Produced.with(Serdes.String(), Serdes.String()));
+ 
+        // ============= EXPENSES PER ITEM =============
+        KTable<String, Double> expensesPerItem = purchases
+                .mapValues(value -> {
+                    JsonObject json = gson.fromJson(value, JsonObject.class);
+                    return json.get("price").getAsDouble() * json.get("units").getAsInt();
+                })
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
+                .reduce(
+                        Double::sum,
+                        Materialized.as("expenses-per-item-store")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.Double())
+                );
+ 
+        expensesPerItem.toStream()
+                .mapValues(v -> toJson("expensesPerItem", v))
+                .to("output-expenses-per-item", Produced.with(Serdes.String(), Serdes.String()));
+ 
+        // ============= PROFIT PER ITEM =============
+        KTable<String, Double> profitPerItem = revenuePerItem.join(
+                expensesPerItem,
+                (revenue, expense) -> revenue - expense
+        );
+ 
         profitPerItem.toStream()
-                .mapValues(v -> json("profit", v))
-                .to("Proj3TotalProfitOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
-
-        // TOTALS (ALL ITEMS COMBINED)
-        KTable<String, Double> totalRevenue =
-        revenuePerItem
+                .mapValues(v -> toJson("profitPerItem", v))
+                .to("output-profit-per-item", Produced.with(Serdes.String(), Serdes.String()));
+ 
+        // ============= TOTAL REVENUE =============
+        KTable<String, Double> totalRevenue = revenuePerItem
                 .toStream()
                 .groupBy((k, v) -> "total", Grouped.with(Serdes.String(), Serdes.Double()))
-                .reduce(Double::sum);
-
-        KTable<String, Double> totalExpenses =
-        expensePerItem
-                .toStream()
-                .groupBy((k, v) -> "total", Grouped.with(Serdes.String(), Serdes.Double()))
-                .reduce(Double::sum);
-
-        KTable<String, Double> totalProfit =
-                totalRevenue.join(totalExpenses, (r, e) -> r - e);
-
+                .reduce(
+                        Double::sum,
+                        Materialized.as("total-revenue-store")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.Double())
+                );
+ 
         totalRevenue.toStream()
-                .mapValues(v -> json("totalRevenue", v))
-                .to("total-revenue", Produced.with(Serdes.String(), Serdes.String()));
-
-        totalExpenses.toStream()
-                .mapValues(v -> json("totalExpenses", v))
-                .to("Proj3TotalExpensesOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
-
-        totalProfit.toStream()
-                .mapValues(v -> json("totalProfit", v))
-                .to("Proj3TotalProfitOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
-
-        // WINDOWED REVENUE (1 HOUR)
+                .mapValues(v -> toJson("totalRevenue", v))
+                .to("output-total-revenue", Produced.with(Serdes.String(), Serdes.String()));
+ 
+        // ============= AVERAGE AMOUNT SPENT PER PURCHASE =============
+        KTable<String, double[]> purchaseAverages = purchases
+                .mapValues(value -> {
+                    JsonObject json = gson.fromJson(value, JsonObject.class);
+                    return json.get("price").getAsDouble() * json.get("units").getAsInt();
+                })
+                .groupBy((k, v) -> "all", Grouped.with(Serdes.String(), Serdes.Double()))
+                .aggregate(
+                        () -> new double[]{0, 0},  // {total, count}
+                        (k, spent, stats) -> {
+                            stats[0] += spent;
+                            stats[1] += 1;
+                            return stats;
+                        },
+                        Materialized.as("purchase-averages-store")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(doubleArraySerdes())
+                );
+ 
+        purchaseAverages.toStream()
+                .mapValues(stats -> toJson("averageAmountPerPurchase", stats[0] / stats[1]))
+                .to("output-purchase-averages", Produced.with(Serdes.String(), Serdes.String()));
+ 
+        // ============= ITEM WITH HIGHEST PROFIT =============
+        KTable<String, ItemProfit> maxProfitTracker = profitPerItem
+                .toStream()
+                .map((item, profit) -> new KeyValue<>("max", new ItemProfit(item, profit)))
+                .groupByKey(Grouped.with(Serdes.String(), itemProfitSerdes()))
+                .reduce(
+                        (ip1, ip2) -> ip1.profit >= ip2.profit ? ip1 : ip2,
+                        Materialized.as("max-profit-tracker")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(itemProfitSerdes())
+                );
+ 
+        maxProfitTracker.toStream()
+                .mapValues(ip -> toJson("highestProfitItem", ip.item + " (" + String.format("%.2f", ip.profit) + ")"))
+                .to("output-highest-profit-item", Produced.with(Serdes.String(), Serdes.String()));
+ 
+        // ============= TOTAL REVENUE IN LAST HOUR =============
         revenuePerItem
                 .toStream()
                 .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
                 .windowedBy(TimeWindows.of(Duration.ofHours(1)))
-                .reduce(Double::sum)
+                .reduce(
+                        Double::sum,
+                        Materialized.as("revenue-1hour-window")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.Double())
+                )
                 .toStream()
-                .mapValues(v -> json("windowedRevenue", v))
-                .to(
-                        "Proj3TotalRevenueWindowedOutputStreamsTopic",
-                        Produced.with(
+                .mapValues(v -> toJson("revenueLastHour", v))
+                .to("output-revenue-1hour", 
+                    Produced.with(
                         WindowedSerdes.timeWindowedSerdeFrom(String.class),
                         Serdes.String()
-                        )
+                    )
                 );
-
-        // HIGHEST PROFIT ITEM
-        profitPerItem
-                .toStream()
-                .groupBy((k, v) -> "global")
-                .reduce((a, b) -> a > b ? a : b)
-                .toStream()
-                .mapValues(v -> json("highestProfit", v))
-                .to("Proj3HighestProfitOutputStreamsTopic", Produced.with(Serdes.String(), Serdes.String()));
-
+ 
+        // ============= COUNTRY WITH HIGHEST SALES PER ITEM =============
+        KTable<String, CountrySales> highestSalesCountry = sales
+                .map((item, value) -> {
+                    JsonObject json = gson.fromJson(value, JsonObject.class);
+                    String country = json.get("country").getAsString();
+                    double revenue = json.get("price").getAsDouble() * json.get("units").getAsInt();
+                    return new KeyValue<>(item, new CountrySales(country, revenue));
+                })
+                .groupByKey(Grouped.with(Serdes.String(), countrySalesSerdes()))
+                .reduce(
+                        (cs1, cs2) -> cs1.sales >= cs2.sales ? cs1 : cs2,
+                        Materialized.as("highest-sales-by-country")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(countrySalesSerdes())
+                );
+ 
+        highestSalesCountry.toStream()
+                .mapValues(cs -> toJson("topCountry", cs.country + " (" + String.format("%.2f", cs.sales) + ")"))
+                .to("output-highest-sales-country", Produced.with(Serdes.String(), Serdes.String()));
+ 
         return builder.build();
     }
-
-    // JSON helper
-    private static String json(String type, double value) {
+ 
+    // ============= Helper Classes =============
+    static class ItemProfit {
+        public String item;
+        public double profit;
+ 
+        public ItemProfit(String item, double profit) {
+            this.item = item;
+            this.profit = profit;
+        }
+ 
+        public ItemProfit() {} // For deserialization
+    }
+ 
+    static class CountrySales {
+        public String country;
+        public double sales;
+ 
+        public CountrySales(String country, double sales) {
+            this.country = country;
+            this.sales = sales;
+        }
+ 
+        public CountrySales() {} // For deserialization
+    }
+ 
+    // ============= Custom Serdes =============
+    private static Serde<ItemProfit> itemProfitSerdes() {
+        return Serdes.serdeFrom(
+                new Serializer<ItemProfit>() {
+                    private final Gson gson = new Gson();
+                    @Override
+                    public byte[] serialize(String topic, ItemProfit data) {
+                        return gson.toJson(data).getBytes();
+                    }
+                },
+                new Deserializer<ItemProfit>() {
+                    private final Gson gson = new Gson();
+                    @Override
+                    public ItemProfit deserialize(String topic, byte[] data) {
+                        return gson.fromJson(new String(data), ItemProfit.class);
+                    }
+                }
+        );
+    }
+ 
+    private static Serde<CountrySales> countrySalesSerdes() {
+        return Serdes.serdeFrom(
+                new Serializer<CountrySales>() {
+                    private final Gson gson = new Gson();
+                    @Override
+                    public byte[] serialize(String topic, CountrySales data) {
+                        return gson.toJson(data).getBytes();
+                    }
+                },
+                new Deserializer<CountrySales>() {
+                    private final Gson gson = new Gson();
+                    @Override
+                    public CountrySales deserialize(String topic, byte[] data) {
+                        return gson.fromJson(new String(data), CountrySales.class);
+                    }
+                }
+        );
+    }
+ 
+    private static Serde<double[]> doubleArraySerdes() {
+        return Serdes.serdeFrom(
+                new Serializer<double[]>() {
+                    private final Gson gson = new Gson();
+                    @Override
+                    public byte[] serialize(String topic, double[] data) {
+                        return gson.toJson(data).getBytes();
+                    }
+                },
+                new Deserializer<double[]>() {
+                    private final Gson gson = new Gson();
+                    @Override
+                    public double[] deserialize(String topic, byte[] data) {
+                        return gson.fromJson(new String(data), double[].class);
+                    }
+                }
+        );
+    }
+ 
+    // ============= JSON Helper =============
+    private static String toJson(String key, Object value) {
         JsonObject obj = new JsonObject();
-        obj.addProperty("id", type);
-        obj.addProperty("value", value);
-        return gson.toJson(obj);
+        obj.addProperty(key, value.toString());
+        return obj.toString();
     }
 }

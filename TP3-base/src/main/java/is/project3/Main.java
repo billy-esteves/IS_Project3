@@ -19,7 +19,7 @@ public class Main {
         System.out.println("Starting System...");
 
         // 1. START KAFKA STREAMS
-        startStreams();
+        //startStreams();
 
         // 2. START PRODUCERS
         startProducers();
