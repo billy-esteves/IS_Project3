@@ -128,7 +128,7 @@ public class AnalyticsTopology {
         if (debug) {
             System.out.println("Debug: purchaseAverages KTable created");
             System.out.println("Debug: purchaseAverages KTable content:");
-            purchaseAverages.toStream().foreach((key, value) -> System.out.println("[]Key: " + key + ", Total Spent: " + value[0] + ", Count: " + value[1]));
+            purchaseAverages.toStream().foreach((key, value) -> System.out.println("[]Key: " + key + ", Average Spent per Purchase: " + value[0] / value[1]));
         }
 
         /**
