@@ -14,181 +14,131 @@ Debug: expensesPerItem KTable created
 Debug: expensesPerItem KTable content:
 Debug: totalRevenue KTable created
 Debug: totalRevenue KTable content:
+Debug: purchaseAverages KTable created
+Debug: purchaseAverages KTable content:
 Kafka Streams started.
 Starting Producers...
 Producers started.
-Sent Purchase: {"item":"bread","price":4.950913825922177,"units":3,"timestamp":1778165860082}
-Sent Sale: {"item":"milk","price":3.4915951567814423,"units":4,"country":"Portugal","timestamp":1778165860082}
-Sent Sale: {"item":"bread","price":6.526476713560971,"units":5,"country":"France","timestamp":1778165861309}
-Sent Purchase: {"item":"bread","price":3.631007979227072,"units":8,"timestamp":1778165861505}
-Sent Sale: {"item":"coffee","price":4.136934673221665,"units":3,"country":"Germany","timestamp":1778165862310}
-Sent Purchase: {"item":"coffee","price":0.6166448125766334,"units":2,"timestamp":1778165862706}
-Sent Sale: {"item":"coffee","price":8.05304718980516,"units":4,"country":"Spain","timestamp":1778165863310}
-Sent Purchase: {"item":"coffee","price":0.6016335198524465,"units":2,"timestamp":1778165863907}
-Sent Sale: {"item":"milk","price":7.876914768001029,"units":4,"country":"Spain","timestamp":1778165864311}
-Sent Purchase: {"item":"coffee","price":2.4624968509321716,"units":2,"timestamp":1778165865108}
-Sent Sale: {"item":"tea","price":4.6084073866102795,"units":1,"country":"Germany","timestamp":1778165865312}
-Sent Purchase: {"item":"milk","price":2.2686214203824404,"units":6,"timestamp":1778165866308}
-Sent Sale: {"item":"tea","price":10.291595315257757,"units":5,"country":"Germany","timestamp":1778165866312}
-Sent Sale: {"item":"bread","price":4.331985703887225,"units":4,"country":"France","timestamp":1778165867313}
-Sent Purchase: {"item":"coffee","price":2.7720344041555505,"units":5,"timestamp":1778165867509}
-Sent Sale: {"item":"milk","price":4.030140561507498,"units":4,"country":"Portugal","timestamp":1778165868313}
-Sent Purchase: {"item":"tea","price":4.781287483776731,"units":1,"timestamp":1778165868709}
-Sent Sale: {"item":"milk","price":9.245108685523572,"units":2,"country":"France","timestamp":1778165869314}
-Sent Purchase: {"item":"bread","price":5.26166513178677,"units":8,"timestamp":1778165869910}
-Sent Sale: {"item":"bread","price":1.950568444890838,"units":4,"country":"Spain","timestamp":1778165870315}
-Sent Purchase: {"item":"tea","price":3.104568376452576,"units":1,"timestamp":1778165871111}
-Sent Sale: {"item":"tea","price":8.174209609255714,"units":1,"country":"Portugal","timestamp":1778165871315}
-Sent Purchase: {"item":"tea","price":4.6757835115384365,"units":2,"timestamp":1778165872311}
-Sent Sale: {"item":"tea","price":8.006153771638783,"units":2,"country":"Spain","timestamp":1778165872316}
-Sent Sale: {"item":"milk","price":10.838477162112568,"units":4,"country":"Portugal","timestamp":1778165873317}
-Sent Purchase: {"item":"milk","price":4.091873850076377,"units":6,"timestamp":1778165873512}
-Sent Sale: {"item":"milk","price":3.02134713343506,"units":2,"country":"Germany","timestamp":1778165874317}
-Sent Purchase: {"item":"bread","price":3.745696477763028,"units":1,"timestamp":1778165874713}
-Sent Sale: {"item":"tea","price":1.1976885995825994,"units":4,"country":"Germany","timestamp":1778165875318}
-Sent Purchase: {"item":"coffee","price":0.6687472034198129,"units":4,"timestamp":1778165875913}
-Sent Sale: {"item":"bread","price":9.456004996933478,"units":3,"country":"Spain","timestamp":1778165876319}
-Sent Purchase: {"item":"coffee","price":2.5954920812037336,"units":6,"timestamp":1778165877114}
-Sent Sale: {"item":"bread","price":10.85470231559437,"units":4,"country":"France","timestamp":1778165877319}
-Sent Purchase: {"item":"coffee","price":1.0019952745206098,"units":7,"timestamp":1778165878315}
-Sent Sale: {"item":"coffee","price":5.439500831464853,"units":2,"country":"Germany","timestamp":1778165878320}
-Sent Sale: {"item":"coffee","price":5.6188485723972095,"units":2,"country":"Portugal","timestamp":1778165879320}
-Sent Purchase: {"item":"coffee","price":3.300080450240255,"units":10,"timestamp":1778165879516}
-Sent Sale: {"item":"coffee","price":4.351748614047324,"units":1,"country":"France","timestamp":1778165880321}
-Sent Purchase: {"item":"milk","price":4.854149407965011,"units":1,"timestamp":1778165880717}
-Sent Sale: {"item":"tea","price":7.720435172717162,"units":1,"country":"Spain","timestamp":1778165881322}
-Sent Purchase: {"item":"bread","price":2.5789591473058504,"units":6,"timestamp":1778165881917}
-Sent Sale: {"item":"coffee","price":1.890866589593221,"units":2,"country":"Germany","timestamp":1778165882322}
-Sent Purchase: {"item":"tea","price":2.804561948902512,"units":5,"timestamp":1778165883118}
-Sent Sale: {"item":"coffee","price":9.214753841644843,"units":2,"country":"France","timestamp":1778165883323}
-Sent Purchase: {"item":"tea","price":3.543823871824161,"units":9,"timestamp":1778165884319}
-Sent Sale: {"item":"milk","price":3.600337837464881,"units":1,"country":"Spain","timestamp":1778165884324}
-Sent Sale: {"item":"milk","price":5.943247392263011,"units":1,"country":"Germany","timestamp":1778165885325}
-Sent Purchase: {"item":"bread","price":2.6561373680751306,"units":2,"timestamp":1778165885519}
-Sent Sale: {"item":"milk","price":8.7090548125102,"units":3,"country":"Portugal","timestamp":1778165886325}
-Sent Purchase: {"item":"bread","price":3.0089663978643193,"units":6,"timestamp":1778165886720}
-Sent Sale: {"item":"tea","price":4.092348726202399,"units":2,"country":"France","timestamp":1778165887326}
-Sent Purchase: {"item":"bread","price":1.140645802902549,"units":9,"timestamp":1778165887920}
-Sent Sale: {"item":"coffee","price":3.768673935730556,"units":4,"country":"Germany","timestamp":1778165888326}
-Sent Purchase: {"item":"coffee","price":4.120471074461689,"units":5,"timestamp":1778165889121}
-Sent Sale: {"item":"bread","price":6.71528673812323,"units":1,"country":"Germany","timestamp":1778165889327}
-Sent Purchase: {"item":"bread","price":2.985757687581902,"units":3,"timestamp":1778165890321}
-Sent Sale: {"item":"bread","price":4.108835717172718,"units":4,"country":"Spain","timestamp":1778165890327}
-Item: coffee, Revenue: 6755.803712470925
-Item: coffee, Expenses: 201.1277094176768
-Item: tea, Revenue: 6166.877002079001
-Item: bread, Revenue: 5362.3253594827365
-Item: tea, Expenses: 320.01096162423994
-Item: bread, Expenses: 331.79418316236456
-Item: milk, Revenue: 5685.172314675703
-Item: milk, Expenses: 205.47751052906852
-Sent Sale: {"item":"milk","price":7.457543349383714,"units":3,"country":"Spain","timestamp":1778165891327}
-Sent Purchase: {"item":"milk","price":4.963543182512961,"units":3,"timestamp":1778165891522}
-Sent Sale: {"item":"tea","price":6.984082753194597,"units":2,"country":"Portugal","timestamp":1778165892328}
-Sent Purchase: {"item":"coffee","price":3.5133865139269473,"units":7,"timestamp":1778165892723}
-Sent Sale: {"item":"bread","price":6.5064523742809515,"units":4,"country":"France","timestamp":1778165893329}
-Sent Purchase: {"item":"bread","price":2.366870750346317,"units":5,"timestamp":1778165893924}
-Sent Sale: {"item":"bread","price":9.383198151089719,"units":5,"country":"Spain","timestamp":1778165894330}
-Sent Purchase: {"item":"milk","price":5.201622034461517,"units":5,"timestamp":1778165895125}
-Sent Sale: {"item":"tea","price":4.9530565609686015,"units":5,"country":"Portugal","timestamp":1778165895331}
-Sent Purchase: {"item":"tea","price":1.338743531070456,"units":7,"timestamp":1778165896325}
-Sent Sale: {"item":"bread","price":6.3938271880249395,"units":5,"country":"Portugal","timestamp":1778165896331}
-Sent Sale: {"item":"coffee","price":5.508367045824169,"units":1,"country":"Germany","timestamp":1778165897332}
-Sent Purchase: {"item":"milk","price":3.061478986142821,"units":7,"timestamp":1778165897526}
-Sent Sale: {"item":"coffee","price":6.7192899229538865,"units":3,"country":"Germany","timestamp":1778165898332}
-Sent Purchase: {"item":"milk","price":4.441721288040063,"units":6,"timestamp":1778165898727}
-Sent Sale: {"item":"coffee","price":6.681093441645398,"units":5,"country":"Germany","timestamp":1778165899333}
-Sent Purchase: {"item":"bread","price":3.2548852451891968,"units":3,"timestamp":1778165899927}
-Sent Sale: {"item":"coffee","price":10.318865672403565,"units":5,"country":"Portugal","timestamp":1778165900333}
-Sent Purchase: {"item":"tea","price":1.940966366866635,"units":10,"timestamp":1778165901128}
-Sent Sale: {"item":"milk","price":6.512694202763527,"units":4,"country":"Germany","timestamp":1778165901334}
-Sent Purchase: {"item":"milk","price":4.111775331319659,"units":5,"timestamp":1778165902329}
-Sent Sale: {"item":"milk","price":8.721741256968205,"units":3,"country":"France","timestamp":1778165902335}
-Sent Sale: {"item":"coffee","price":5.332996947158112,"units":4,"country":"France","timestamp":1778165903339}
-Sent Purchase: {"item":"milk","price":2.7459236636442426,"units":2,"timestamp":1778165903531}
-Sent Sale: {"item":"bread","price":10.282232638192312,"units":1,"country":"Spain","timestamp":1778165904340}
-Sent Purchase: {"item":"coffee","price":3.591853401795338,"units":7,"timestamp":1778165904732}
-Sent Sale: {"item":"coffee","price":6.4379359547461705,"units":4,"country":"Germany","timestamp":1778165905341}
-Sent Purchase: {"item":"milk","price":3.005851011454912,"units":7,"timestamp":1778165905933}
-Sent Sale: {"item":"coffee","price":3.573011160347669,"units":1,"country":"Spain","timestamp":1778165906342}
-Sent Purchase: {"item":"milk","price":2.2805319440216456,"units":7,"timestamp":1778165907133}
-Sent Sale: {"item":"bread","price":7.032138644049736,"units":4,"country":"Germany","timestamp":1778165907342}
-Sent Purchase: {"item":"milk","price":3.7167767124245747,"units":2,"timestamp":1778165908334}
-Sent Sale: {"item":"coffee","price":4.698757670394084,"units":4,"country":"Spain","timestamp":1778165908343}
-Sent Sale: {"item":"tea","price":2.5800376366587288,"units":2,"country":"France","timestamp":1778165909343}
-Sent Purchase: {"item":"milk","price":1.208752371722217,"units":2,"timestamp":1778165909535}
-Sent Sale: {"item":"coffee","price":10.66756016171182,"units":2,"country":"Portugal","timestamp":1778165910344}
-Sent Purchase: {"item":"bread","price":0.850777711781946,"units":1,"timestamp":1778165910735}
-Sent Sale: {"item":"coffee","price":2.708872203237112,"units":2,"country":"Spain","timestamp":1778165911344}
-Sent Purchase: {"item":"coffee","price":4.142832431333341,"units":6,"timestamp":1778165911935}
-Sent Sale: {"item":"bread","price":4.354145543593738,"units":4,"country":"France","timestamp":1778165912345}
-Sent Purchase: {"item":"bread","price":1.3280425468710684,"units":10,"timestamp":1778165913136}
-Sent Sale: {"item":"tea","price":7.357405338464311,"units":4,"country":"France","timestamp":1778165913345}
-Sent Purchase: {"item":"bread","price":4.503188436793797,"units":8,"timestamp":1778165914336}
-Sent Sale: {"item":"bread","price":4.344333528565277,"units":4,"country":"Spain","timestamp":1778165914345}
-Sent Sale: {"item":"milk","price":9.749021046266654,"units":4,"country":"France","timestamp":1778165915346}
-Sent Purchase: {"item":"tea","price":0.6180066648023786,"units":1,"timestamp":1778165915537}
-Sent Sale: {"item":"milk","price":7.4578270558083615,"units":5,"country":"Spain","timestamp":1778165916347}
-Sent Purchase: {"item":"milk","price":2.739718144503196,"units":6,"timestamp":1778165916738}
-Sent Sale: {"item":"milk","price":3.2351135018575885,"units":2,"country":"Germany","timestamp":1778165917347}
-Sent Purchase: {"item":"milk","price":2.8779145996653894,"units":10,"timestamp":1778165917938}
-Sent Sale: {"item":"tea","price":5.480886324290712,"units":2,"country":"Germany","timestamp":1778165918348}
-Sent Purchase: {"item":"bread","price":0.8168316131563231,"units":2,"timestamp":1778165919139}
-Sent Sale: {"item":"bread","price":6.002991273195066,"units":3,"country":"Spain","timestamp":1778165919349}
-Sent Purchase: {"item":"bread","price":2.3154842647813445,"units":5,"timestamp":1778165920340}
-Sent Sale: {"item":"milk","price":9.511759885713277,"units":3,"country":"France","timestamp":1778165920349}
-Item: coffee, Revenue: 6962.674383035295
-Item: coffee, Expenses: 275.7213834157328
-Item: tea, Revenue: 6251.161919665989
-Item: bread, Revenue: 5558.449972998046
-Item: tea, Expenses: 349.4098366752018
-Item: bread, Expenses: 416.7609878747262
-Item: milk, Revenue: 5871.051671430777
-Item: milk, Expenses: 412.58084858434444
-Key: total, Total Revenue: 23970.178388708366
-Sent Sale: {"item":"coffee","price":1.3121218236427148,"units":1,"country":"Germany","timestamp":1778165921350}
-Sent Purchase: {"item":"milk","price":1.4425577059867734,"units":8,"timestamp":1778165921540}
-Sent Sale: {"item":"coffee","price":9.829505064882966,"units":1,"country":"Germany","timestamp":1778165922352}
-Sent Purchase: {"item":"milk","price":4.896921459207085,"units":8,"timestamp":1778165922741}
-Sent Sale: {"item":"tea","price":6.25533122895726,"units":5,"country":"France","timestamp":1778165923352}
-Sent Purchase: {"item":"coffee","price":0.8138536982841594,"units":7,"timestamp":1778165923941}
-Sent Sale: {"item":"milk","price":6.389095972716857,"units":5,"country":"Portugal","timestamp":1778165924354}
-Sent Purchase: {"item":"milk","price":2.6123498620080867,"units":8,"timestamp":1778165925142}
-Sent Sale: {"item":"milk","price":6.186530414726594,"units":4,"country":"Germany","timestamp":1778165925354}
-Sent Purchase: {"item":"milk","price":4.944186347951572,"units":8,"timestamp":1778165926343}
-Sent Sale: {"item":"bread","price":8.354039388054005,"units":4,"country":"Portugal","timestamp":1778165926355}
-Sent Sale: {"item":"tea","price":2.209800068039264,"units":3,"country":"Germany","timestamp":1778165927355}
-Sent Purchase: {"item":"coffee","price":3.257794096041066,"units":7,"timestamp":1778165927543}
-Sent Sale: {"item":"milk","price":1.6611764418804333,"units":5,"country":"Germany","timestamp":1778165928356}
-Sent Purchase: {"item":"bread","price":1.0896521311963243,"units":5,"timestamp":1778165928744}
-Sent Sale: {"item":"coffee","price":7.905763827622443,"units":4,"country":"France","timestamp":1778165929357}
-Sent Purchase: {"item":"milk","price":2.096172913003371,"units":2,"timestamp":1778165929944}
-Sent Sale: {"item":"tea","price":3.9053296270354325,"units":2,"country":"Portugal","timestamp":1778165930358}
-Sent Purchase: {"item":"coffee","price":2.3963466419898465,"units":10,"timestamp":1778165931145}
-Sent Sale: {"item":"bread","price":2.749393552423536,"units":4,"country":"France","timestamp":1778165931358}
-Sent Purchase: {"item":"milk","price":2.8193305046545047,"units":6,"timestamp":1778165932345}
-Sent Sale: {"item":"tea","price":1.5537258792973476,"units":5,"country":"Portugal","timestamp":1778165932359}
-Sent Sale: {"item":"bread","price":1.570894170131221,"units":5,"country":"France","timestamp":1778165933360}
-Sent Purchase: {"item":"tea","price":0.6543902491149463,"units":4,"timestamp":1778165933546}
-Sent Sale: {"item":"milk","price":3.4487959638774415,"units":4,"country":"Germany","timestamp":1778165934361}
-Sent Purchase: {"item":"milk","price":3.948953028633068,"units":2,"timestamp":1778165934747}
-Sent Sale: {"item":"coffee","price":10.522188767618353,"units":1,"country":"Portugal","timestamp":1778165935361}
-Sent Purchase: {"item":"milk","price":3.9629616223658326,"units":10,"timestamp":1778165935948}
-Sent Sale: {"item":"tea","price":2.0647394457522665,"units":3,"country":"France","timestamp":1778165936362}
-Sent Purchase: {"item":"coffee","price":3.1862888980113198,"units":8,"timestamp":1778165937149}
-Sent Sale: {"item":"tea","price":2.2880558241357862,"units":3,"country":"Germany","timestamp":1778165937363}
-Sent Purchase: {"item":"bread","price":3.1858861815510755,"units":9,"timestamp":1778165938349}
-Sent Sale: {"item":"coffee","price":8.981891164985338,"units":4,"country":"Portugal","timestamp":1778165938364}
-Sent Sale: {"item":"milk","price":2.15147325267025,"units":1,"country":"Germany","timestamp":1778165939365}
-Sent Purchase: {"item":"coffee","price":1.2489126884518837,"units":10,"timestamp":1778165939550}
-Sent Sale: {"item":"coffee","price":3.2549536323334696,"units":1,"country":"Spain","timestamp":1778165940365}
+Sent Purchase: {"item":"tea","price":5.332722747110932,"units":2,"timestamp":1778346608470}
+Sent Sale: {"item":"bread","price":8.694188967867321,"units":5,"country":"Spain","timestamp":1778346608470}
+Sent Sale: {"item":"tea","price":2.9818857214730414,"units":2,"country":"Germany","timestamp":1778346609761}
+Sent Purchase: {"item":"tea","price":3.041341819233142,"units":4,"timestamp":1778346609960}
+Sent Sale: {"item":"bread","price":10.246057734290583,"units":4,"country":"Germany","timestamp":1778346610761}
+Sent Purchase: {"item":"bread","price":1.5982832639675726,"units":10,"timestamp":1778346611160}
+Sent Sale: {"item":"coffee","price":6.409120202846732,"units":3,"country":"Portugal","timestamp":1778346611762}
+Sent Purchase: {"item":"coffee","price":3.880883738443181,"units":7,"timestamp":1778346612361}
+Sent Sale: {"item":"milk","price":9.524906157344994,"units":2,"country":"France","timestamp":1778346612762}
+Sent Purchase: {"item":"bread","price":1.2319795576814847,"units":2,"timestamp":1778346613561}
+Sent Sale: {"item":"bread","price":1.8795438622626683,"units":3,"country":"Germany","timestamp":1778346613763}
+Sent Purchase: {"item":"coffee","price":5.140108735357998,"units":9,"timestamp":1778346614762}
+Sent Sale: {"item":"coffee","price":5.130549063390777,"units":3,"country":"France","timestamp":1778346614763}
+Sent Sale: {"item":"bread","price":2.083583918986287,"units":1,"country":"France","timestamp":1778346615764}
+Sent Purchase: {"item":"tea","price":3.496148312743408,"units":3,"timestamp":1778346615962}
+Sent Sale: {"item":"tea","price":3.592607382168871,"units":1,"country":"France","timestamp":1778346616764}
+Sent Purchase: {"item":"milk","price":1.6507436916873148,"units":8,"timestamp":1778346617163}
+Sent Sale: {"item":"milk","price":3.318037356281116,"units":5,"country":"Portugal","timestamp":1778346617764}
+Sent Purchase: {"item":"coffee","price":3.156866885962911,"units":4,"timestamp":1778346618363}
+Sent Sale: {"item":"milk","price":2.940271532333313,"units":2,"country":"France","timestamp":1778346618765}
+Sent Purchase: {"item":"coffee","price":4.941091950926866,"units":6,"timestamp":1778346619563}
+Sent Sale: {"item":"tea","price":3.660120120333583,"units":4,"country":"Germany","timestamp":1778346619765}
+Sent Purchase: {"item":"milk","price":1.3785707213150495,"units":7,"timestamp":1778346620764}
+Sent Sale: {"item":"bread","price":4.737597027062062,"units":5,"country":"Portugal","timestamp":1778346620766}
+Sent Sale: {"item":"coffee","price":6.965437881920174,"units":5,"country":"Germany","timestamp":1778346621766}
+Sent Purchase: {"item":"tea","price":4.538681761284088,"units":9,"timestamp":1778346621964}
+Sent Sale: {"item":"tea","price":9.512492715898922,"units":4,"country":"Germany","timestamp":1778346622767}
+Sent Purchase: {"item":"coffee","price":1.6750358789137028,"units":3,"timestamp":1778346623165}
+Sent Sale: {"item":"coffee","price":10.705805261819954,"units":1,"country":"Portugal","timestamp":1778346623767}
+Sent Purchase: {"item":"coffee","price":4.824658234151281,"units":4,"timestamp":1778346624365}
+Sent Sale: {"item":"coffee","price":10.851768213700135,"units":3,"country":"France","timestamp":1778346624767}
+Sent Purchase: {"item":"tea","price":2.3921019092801163,"units":3,"timestamp":1778346625566}
+Sent Sale: {"item":"milk","price":8.620411697984336,"units":2,"country":"Germany","timestamp":1778346625768}
+Sent Purchase: {"item":"coffee","price":3.575935030495907,"units":10,"timestamp":1778346626766}
+Sent Sale: {"item":"milk","price":3.434121525469548,"units":2,"country":"Portugal","timestamp":1778346626768}
+Sent Sale: {"item":"bread","price":3.955244998386346,"units":3,"country":"France","timestamp":1778346627769}
+Sent Purchase: {"item":"bread","price":2.964107561027254,"units":10,"timestamp":1778346627968}
+Sent Sale: {"item":"bread","price":7.8831113526143355,"units":4,"country":"France","timestamp":1778346628769}
+Sent Purchase: {"item":"coffee","price":5.113351184007115,"units":8,"timestamp":1778346629168}
+Sent Sale: {"item":"milk","price":1.4572470455783506,"units":1,"country":"Germany","timestamp":1778346629771}
+Sent Purchase: {"item":"bread","price":5.233864843560934,"units":6,"timestamp":1778346630369}
+Sent Sale: {"item":"bread","price":9.662065865645403,"units":4,"country":"Spain","timestamp":1778346630771}
+Sent Purchase: {"item":"tea","price":3.5375498455256684,"units":9,"timestamp":1778346631569}
+Sent Sale: {"item":"milk","price":6.7541092318070515,"units":4,"country":"Germany","timestamp":1778346631772}
+Sent Purchase: {"item":"bread","price":3.4550988473673527,"units":6,"timestamp":1778346632770}
+Sent Sale: {"item":"milk","price":7.092286196833907,"units":1,"country":"Portugal","timestamp":1778346632772}
+Sent Sale: {"item":"tea","price":2.431494065961869,"units":1,"country":"Portugal","timestamp":1778346633773}
+Sent Purchase: {"item":"bread","price":4.879028808712394,"units":8,"timestamp":1778346633970}
+Sent Sale: {"item":"milk","price":1.8059623799224014,"units":4,"country":"Portugal","timestamp":1778346634773}
+Sent Purchase: {"item":"bread","price":2.20663167643104,"units":3,"timestamp":1778346635170}
+Sent Sale: {"item":"tea","price":10.656749320458623,"units":3,"country":"France","timestamp":1778346635774}
+Sent Purchase: {"item":"coffee","price":1.1147838337375662,"units":6,"timestamp":1778346636371}
+Sent Sale: {"item":"milk","price":6.428380218607839,"units":4,"country":"Portugal","timestamp":1778346636774}
+Sent Purchase: {"item":"milk","price":5.3391906584467215,"units":1,"timestamp":1778346637571}
+Sent Sale: {"item":"tea","price":3.889058161999134,"units":3,"country":"France","timestamp":1778346637774}
+Sent Purchase: {"item":"milk","price":3.911194619027238,"units":4,"timestamp":1778346638772}
+Sent Sale: {"item":"bread","price":1.740707450907826,"units":3,"country":"Spain","timestamp":1778346638775}
+Sent Sale: {"item":"milk","price":3.2272631580894897,"units":4,"country":"Germany","timestamp":1778346639776}
+Sent Purchase: {"item":"coffee","price":1.2485720296254084,"units":3,"timestamp":1778346639972}
+Sent Sale: {"item":"coffee","price":6.527394694424621,"units":4,"country":"Portugal","timestamp":1778346640776}
+Sent Purchase: {"item":"milk","price":1.641280914591577,"units":2,"timestamp":1778346641173}
+Sent Sale: {"item":"bread","price":10.118263988802177,"units":4,"country":"France","timestamp":1778346641777}
+Sent Purchase: {"item":"coffee","price":5.2229945967872204,"units":9,"timestamp":1778346642373}
+[]Key: all, Total Spent: 7974.328316975496, Count: 479.0
+[]Item: tea, Revenue: 8568.38629893578
+[]Item: bread, Revenue: 8349.204734877936
+[]Item: tea, Expenses: 2569.283956694153
+[]Item: bread, Expenses: 2869.4103429960824
+[]Item: coffee, Revenue: 10237.982992588977
+[]Item: coffee, Expenses: 2147.5411281984793
+[]Key: total, Total Revenue: 330299.9027042581
+[]Item: milk, Revenue: 7745.156461211829
+[]Item: milk, Expenses: 2196.560107479139
+Sent Sale: {"item":"tea","price":1.0895253124037876,"units":5,"country":"France","timestamp":1778346642780}
+Sent Purchase: {"item":"coffee","price":4.694179594940818,"units":5,"timestamp":1778346643574}
+Sent Sale: {"item":"tea","price":1.239592816169214,"units":4,"country":"France","timestamp":1778346643781}
+Sent Purchase: {"item":"bread","price":3.3478269780759313,"units":1,"timestamp":1778346644774}
+Sent Sale: {"item":"coffee","price":5.131261502879575,"units":3,"country":"France","timestamp":1778346644781}
+Sent Sale: {"item":"bread","price":1.4091643418268187,"units":5,"country":"Portugal","timestamp":1778346645781}
+Sent Purchase: {"item":"coffee","price":1.3456736909375073,"units":2,"timestamp":1778346645974}
+Sent Sale: {"item":"coffee","price":5.802757691274816,"units":3,"country":"Germany","timestamp":1778346646782}
+Sent Purchase: {"item":"tea","price":4.4674748871442,"units":3,"timestamp":1778346647175}
+Sent Sale: {"item":"milk","price":7.099043897336105,"units":5,"country":"Portugal","timestamp":1778346647783}
+Sent Purchase: {"item":"milk","price":4.490829124681218,"units":4,"timestamp":1778346648375}
+Sent Sale: {"item":"bread","price":5.335485089336663,"units":5,"country":"France","timestamp":1778346648783}
+Sent Purchase: {"item":"milk","price":2.0020673072130104,"units":1,"timestamp":1778346649576}
+Sent Sale: {"item":"coffee","price":8.287553788833783,"units":3,"country":"Spain","timestamp":1778346649783}
+Sent Purchase: {"item":"coffee","price":3.3532700856325413,"units":2,"timestamp":1778346650776}
+Sent Sale: {"item":"bread","price":5.7270053835894466,"units":2,"country":"France","timestamp":1778346650783}
+Sent Sale: {"item":"milk","price":4.018537499051116,"units":2,"country":"Spain","timestamp":1778346651784}
+Sent Purchase: {"item":"bread","price":0.9956803638529844,"units":8,"timestamp":1778346651976}
+Sent Sale: {"item":"milk","price":2.8143038589282003,"units":3,"country":"Portugal","timestamp":1778346652784}
+Sent Purchase: {"item":"milk","price":3.8803541745111683,"units":2,"timestamp":1778346653177}
+Sent Sale: {"item":"coffee","price":4.6544108488467835,"units":4,"country":"Germany","timestamp":1778346653785}
+Sent Purchase: {"item":"coffee","price":2.6331897935231945,"units":7,"timestamp":1778346654377}
+Sent Sale: {"item":"milk","price":5.293756857277968,"units":2,"country":"Portugal","timestamp":1778346654785}
+Sent Purchase: {"item":"bread","price":1.9094814050959044,"units":5,"timestamp":1778346655578}
+Sent Sale: {"item":"tea","price":10.66268537165474,"units":2,"country":"France","timestamp":1778346655785}
+Sent Purchase: {"item":"coffee","price":3.6044449581664213,"units":8,"timestamp":1778346656778}
+Sent Sale: {"item":"milk","price":2.5142464395542277,"units":4,"country":"Germany","timestamp":1778346656786}
+Sent Sale: {"item":"milk","price":6.29774586191888,"units":4,"country":"Germany","timestamp":1778346657786}
+Sent Purchase: {"item":"tea","price":4.348000005934565,"units":5,"timestamp":1778346657979}
+Sent Sale: {"item":"bread","price":7.742530487625049,"units":2,"country":"Portugal","timestamp":1778346658787}
+Sent Purchase: {"item":"bread","price":1.1173090764753375,"units":4,"timestamp":1778346659179}
+Sent Sale: {"item":"bread","price":6.287454310219173,"units":5,"country":"Germany","timestamp":1778346659787}
+Sent Purchase: {"item":"bread","price":0.5476472419013646,"units":1,"timestamp":1778346660380}
+Sent Sale: {"item":"bread","price":3.8770974234483058,"units":5,"country":"Spain","timestamp":1778346660787}
+Sent Purchase: {"item":"milk","price":1.06521046321309,"units":10,"timestamp":1778346661580}
+Sent Sale: {"item":"coffee","price":5.897183104178176,"units":1,"country":"Spain","timestamp":1778346661788}
+Sent Purchase: {"item":"bread","price":3.7741908419599683,"units":3,"timestamp":1778346662781}
+Sent Sale: {"item":"coffee","price":3.5234309807152364,"units":5,"country":"Spain","timestamp":1778346662788}
 Shutting down...
-Item: milk, Revenue: 5951.9958122708495
-Item: milk, Expenses: 592.3848227204309
-Item: coffee, Revenue: 7055.143772294204
-Item: coffee, Expenses: 366.16582246451725
-Item: bread, Revenue: 5610.718175610612
-Item: tea, Revenue: 6317.705650475115
-Item: tea, Expenses: 352.02739767166156
-Item: bread, Expenses: 450.8822241646675
-Key: total, Total Revenue: 48613.51633583847
+[]Item: milk, Revenue: 7842.967150193844
+[]Item: milk, Expenses: 2234.9383042662303
+[]Item: coffee, Revenue: 10337.779692941083
+[]Item: coffee, Expenses: 2227.6778019463177
+[]Item: tea, Revenue: 8600.117667505785
+[]Item: bread, Revenue: 8460.68981244452
+[]Item: tea, Expenses: 2604.4263813852585
+[]Item: bread, Expenses: 2906.610475984144
+[]Key: total, Total Revenue: 365200.6331918726
+[]Key: all, Total Spent: 8212.192696560676, Count: 497.0
+Sent Sale: {"item":"bread","price":6.300020892955612,"units":4,"country":"Germany","timestamp":1778346663791}

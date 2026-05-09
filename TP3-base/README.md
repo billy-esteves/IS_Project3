@@ -23,25 +23,25 @@ Project topology:
 TP3-project3/
 │
 ├── devcontainer/
-│   ├── docker-compose-cluster.yml        ✅ (you already have)
+│   ├── docker-compose-cluster.yml
 │   ├── docker-compose-standalone.yml
 │   └── Dockerfile
 │
 ├── config/
-│   ├── source.json                       ✅ JDBC source (DB → Kafka)
-│   ├── sink.json                         ✅ JDBC sink (Kafka → DB)
+│   ├── source.json                       JDBC source (DB → Kafka)
+│   ├── sink.json                         JDBC sink (Kafka → DB)
 │   ├── post_connectors.sh                (start connectors)
 │   ├── get_connectors.sh
 │   ├── delete_connectors.sh
 │
 ├── sql/
-│   └── create_tables.sql                ✅ DB schema
+│   └── create_tables.sql                DB schema
 │
 ├── lib/                                  (Kafka Connect JDBC jars)
 │
 ├── src/main/java/is/project3/
 │   │
-│   ├── Main.java                         🚀 starts everything
+│   ├── Main.java                         starts everything
 │   │
 │   ├── config/
 │   │   └── KafkaConfig.java             (bootstrap, serde, properties)
@@ -54,20 +54,15 @@ TP3-project3/
 │   │   └── AggregateStats.java
 │   │
 │   ├── producers/
-│   │   ├── SalesProducer.java          🎯 simulates customers
-│   │   ├── PurchaseProducer.java       🎯 simulates suppliers
+│   │   ├── SalesProducer.java          imulates customers
+│   │   ├── PurchaseProducer.java       simulates suppliers
 │   │   └── DBInfoProducer.java         (optional seed data)
 │   │
 │   ├── streams/
-│   │   ├── AnalyticsTopology.java      🔥 ALL Kafka Streams logic
-│   │   ├── RevenueProcessor.java
-│   │   ├── ExpenseProcessor.java
-│   │   ├── ProfitProcessor.java
-│   │   ├── WindowedStatsProcessor.java
-│   │   └── RankingProcessor.java
+│   │   ├── AnalyticsTopology.java      ALL Kafka Streams logic
 │   │
 │   ├── rest/
-│   │   ├── RestServer.java             🌐 API layer
+│   │   ├── RestServer.java             API layer
 │   │   ├── StatsController.java
 │   │   └── DatabaseClient.java
 │   │

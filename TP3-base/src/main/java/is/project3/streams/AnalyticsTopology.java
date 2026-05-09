@@ -10,6 +10,8 @@ import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.common.serialization.Deserializer;
+import org.apache.kafka.common.utils.Bytes;
+import org.apache.kafka.streams.state.KeyValueStore;
  
 import java.time.Duration;
  
@@ -41,7 +43,7 @@ public class AnalyticsTopology {
         if (debug) {
             System.out.println("Debug: revenuePerItem KTable created");
             System.out.println("Debug: revenuePerItem KTable content:");
-            revenuePerItem.toStream().foreach((key, value) -> System.out.println("Item: " + key + ", Revenue: " + value));
+            revenuePerItem.toStream().foreach((key, value) -> System.out.println("[]Item: " + key + ", Revenue: " + value));
         }
  
         revenuePerItem.toStream()
@@ -63,7 +65,7 @@ public class AnalyticsTopology {
         if (debug) {
             System.out.println("Debug: expensesPerItem KTable created");
             System.out.println("Debug: expensesPerItem KTable content:");
-            expensesPerItem.toStream().foreach((key, value) -> System.out.println("Item: " + key + ", Expenses: " + value));
+            expensesPerItem.toStream().foreach((key, value) -> System.out.println("[]Item: " + key + ", Expenses: " + value));
         }
  
         expensesPerItem.toStream()
@@ -93,13 +95,13 @@ public class AnalyticsTopology {
         if (debug) {
             System.out.println("Debug: totalRevenue KTable created");
             System.out.println("Debug: totalRevenue KTable content:");
-            totalRevenue.toStream().foreach((key, value) -> System.out.println("Key: " + key + ", Total Revenue: " + value));
+            totalRevenue.toStream().foreach((key, value) -> System.out.println("[]Key: " + key + ", Total Revenue: " + value));
         }
 
         totalRevenue.toStream()
                 .mapValues(v -> toJson("totalRevenue", v))
                 .to("output-total-revenue", Produced.with(Serdes.String(), Serdes.String()));
-    /**
+    
         // ============= AVERAGE AMOUNT SPENT PER PURCHASE =============
         KTable<String, double[]> purchaseAverages = purchases
                 .mapValues(value -> {
@@ -114,7 +116,7 @@ public class AnalyticsTopology {
                             stats[1] += 1;
                             return stats;
                         },
-                        Materialized.as("purchase-averages-store")
+                        Materialized.<String, double[], KeyValueStore<Bytes, byte[]>>as("purchase-averages-store")
                                 .withKeySerde(Serdes.String())
                                 .withValueSerde(doubleArraySerdes())
                 );
@@ -122,7 +124,14 @@ public class AnalyticsTopology {
         purchaseAverages.toStream()
                 .mapValues(stats -> toJson("averageAmountPerPurchase", stats[0] / stats[1]))
                 .to("output-purchase-averages", Produced.with(Serdes.String(), Serdes.String()));
- 
+
+        if (debug) {
+            System.out.println("Debug: purchaseAverages KTable created");
+            System.out.println("Debug: purchaseAverages KTable content:");
+            purchaseAverages.toStream().foreach((key, value) -> System.out.println("[]Key: " + key + ", Total Spent: " + value[0] + ", Count: " + value[1]));
+        }
+
+        /**
         // ============= ITEM WITH HIGHEST PROFIT =============
         KTable<String, ItemProfit> maxProfitTracker = profitPerItem
                 .toStream()
