@@ -42,7 +42,6 @@ public class AnalyticsTopology {
 
         if (debug) {
             System.out.println("Debug: revenuePerItem KTable created");
-            System.out.println("Debug: revenuePerItem KTable content:");
             revenuePerItem.toStream().foreach((key, value) -> System.out.println("[]Item: " + key + ", Revenue: " + value));
         }
  
@@ -64,7 +63,6 @@ public class AnalyticsTopology {
 
         if (debug) {
             System.out.println("Debug: expensesPerItem KTable created");
-            System.out.println("Debug: expensesPerItem KTable content:");
             expensesPerItem.toStream().foreach((key, value) -> System.out.println("[]Item: " + key + ", Expenses: " + value));
         }
  
@@ -94,7 +92,6 @@ public class AnalyticsTopology {
 
         if (debug) {
             System.out.println("Debug: totalRevenue KTable created");
-            System.out.println("Debug: totalRevenue KTable content:");
             totalRevenue.toStream().foreach((key, value) -> System.out.println("[]Key: " + key + ", Total Revenue: " + value));
         }
 
@@ -127,11 +124,10 @@ public class AnalyticsTopology {
 
         if (debug) {
             System.out.println("Debug: purchaseAverages KTable created");
-            System.out.println("Debug: purchaseAverages KTable content:");
             purchaseAverages.toStream().foreach((key, value) -> System.out.println("[]Key: " + key + ", Average Spent per Purchase: " + value[0] / value[1]));
         }
 
-        /**
+        
         // ============= ITEM WITH HIGHEST PROFIT =============
         KTable<String, ItemProfit> maxProfitTracker = profitPerItem
                 .toStream()
@@ -140,14 +136,26 @@ public class AnalyticsTopology {
                 .reduce(
                         (ip1, ip2) -> ip1.profit >= ip2.profit ? ip1 : ip2,
                         Materialized.as("max-profit-tracker")
-                                .withKeySerde(Serdes.String())
-                                .withValueSerde(itemProfitSerdes())
                 );
+
+        if (debug) {
+            System.out.println("Debug: maxProfitTracker KTable created");
+            maxProfitTracker
+                .toStream()
+                .peek((key, value) ->
+                    System.out.println(
+                        "[]Key: " + key +
+                        ", Highest Profit Item: " + value.item +
+                        " (" + String.format("%.2f", value.profit) + ")"
+                    )
+                );
+        }
  
         maxProfitTracker.toStream()
                 .mapValues(ip -> toJson("highestProfitItem", ip.item + " (" + String.format("%.2f", ip.profit) + ")"))
                 .to("output-highest-profit-item", Produced.with(Serdes.String(), Serdes.String()));
- 
+
+        
         // ============= TOTAL REVENUE IN LAST HOUR =============
         revenuePerItem
                 .toStream()
@@ -156,8 +164,6 @@ public class AnalyticsTopology {
                 .reduce(
                         Double::sum,
                         Materialized.as("revenue-1hour-window")
-                                .withKeySerde(Serdes.String())
-                                .withValueSerde(Serdes.Double())
                 )
                 .toStream()
                 .mapValues(v -> toJson("revenueLastHour", v))
@@ -167,7 +173,30 @@ public class AnalyticsTopology {
                         Serdes.String()
                     )
                 );
- 
+
+        if (debug) {
+            System.out.println("Debug: revenue-1hour-window KTable created");
+            revenuePerItem
+                .toStream()
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
+                .windowedBy(TimeWindows.of(Duration.ofHours(1)))
+                .reduce(
+                        Double::sum,
+                        Materialized.as("revenue-1hour-window-debug")
+                )
+                .toStream()
+                .foreach((windowedKey, value) -> {
+                    String item = windowedKey.key();
+
+                    System.out.println(
+                        "[]Item: " + item +
+                        ", Window: " + windowedKey.window().startTime() +
+                        " - " + windowedKey.window().endTime() +
+                        ", Revenue Last Hour: " + value
+                    );
+                });
+        }
+
         // ============= COUNTRY WITH HIGHEST SALES PER ITEM =============
         KTable<String, CountrySales> highestSalesCountry = sales
                 .map((item, value) -> {
@@ -180,14 +209,23 @@ public class AnalyticsTopology {
                 .reduce(
                         (cs1, cs2) -> cs1.sales >= cs2.sales ? cs1 : cs2,
                         Materialized.as("highest-sales-by-country")
-                                .withKeySerde(Serdes.String())
-                                .withValueSerde(countrySalesSerdes())
                 );
+
+        if (debug) {
+            System.out.println("Debug: highestSalesCountry KTable created");
+            highestSalesCountry.toStream().foreach((item, cs) -> 
+                System.out.println(
+                    "[]Item: " + item +
+                    ", Highest Sales Country: " + cs.country +
+                    " (" + String.format("%.2f", cs.sales) + ")"
+                )
+            );
+        }
  
         highestSalesCountry.toStream()
                 .mapValues(cs -> toJson("topCountry", cs.country + " (" + String.format("%.2f", cs.sales) + ")"))
                 .to("output-highest-sales-country", Produced.with(Serdes.String(), Serdes.String()));
-        **/
+        
         return builder.build();
      
     }
